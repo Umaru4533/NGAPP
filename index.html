@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NG App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="app-title">NG App</div>
+            <div class="header-icons">
+                <svg class="icon camera-icon" onclick="openCamera()" viewBox="0 0 24 24">
+                    <path d="M12 15.5c1.38 0 2.5-1.12 2.5-2.5s-1.12-2.5-2.5-2.5-2.5 1.12-2.5 2.5 1.12 2.5 2.5 2.5zM9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+                </svg>
+                <div class="dropdown">
+                    <svg class="icon" onclick="toggleDropdown()" viewBox="0 0 24 24">
+                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                    </svg>
+                    <div class="dropdown-content" id="dropdownMenu">
+                        <div class="dropdown-item" onclick="newGroup()">New group</div>
+                        <div class="dropdown-item" onclick="newBroadcast()">New broadcast</div>
+                        <div class="dropdown-item" onclick="linkDevice()">Linked devices</div>
+                        <div class="dropdown-item" onclick="markAllRead()">Mark all read</div>
+                        <div class="dropdown-item" onclick="openSettings()">Settings</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="Search or start new chat" oninput="searchChats(this.value)">
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="switchTab('chats')">Chats</div>
+            <div class="nav-tab" onclick="switchTab('unread')">Unread</div>
+            <div class="nav-tab" onclick="switchTab('favorites')">Favorites</div>
+            <div class="nav-tab" onclick="switchTab('groups')">Groups</div>
+            <div class="nav-tab" onclick="switchTab('status')">Status</div>
+            <div class="nav-tab" onclick="switchTab('calls')">Calls</div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="content">
+            <div class="chat-list" id="chatList">
+                <!-- Chat items will be populated here -->
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <div class="fab" onclick="newChat()">
+            <svg viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v3c0 .6.4 1 1 1h.5c.2 0 .5-.1.7-.3L12.9 18H20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-3 8h-4v4h-2v-4H7V8h4V4h2v4h4v2z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Camera Modal -->
+    <div class="camera-modal" id="cameraModal">
+        <div class="camera-header">
+            <button onclick="closeCamera()" class="close-btn">✕</button>
+            <span class="camera-title">Camera</span>
+            <div class="camera-flash" onclick="toggleFlash()" id="flashBtn">⚡</div>
+        </div>
+        <div class="camera-view">
+            <video id="cameraPreview" autoplay muted playsinline></video>
+            <canvas id="photoCanvas" class="hidden"></canvas>
+        </div>
+        <div class="camera-controls">
+            <button class="camera-btn gallery-btn" onclick="openGallery()">🖼️</button>
+            <button class="camera-btn capture-btn" onclick="takePhoto()" id="captureBtn"></button>
+            <button class="camera-btn video-btn" onclick="toggleVideo()" id="videoBtn">🎥</button>
+        </div>
+        <div class="camera-timer" id="recordingTimer" style="display: none;">
+            <span id="timerDisplay">00:00</span>
+        </div>
+    </div>
+
+    <!-- Chat View Modal -->
+    <div class="chat-modal" id="chatModal">
+        <div class="chat-header">
+            <button onclick="closeChatView()" class="back-btn">←</button>
+            <div class="chat-contact-info">
+                <div class="chat-avatar" id="chatAvatar"></div>
+                <div class="chat-details">
+                    <div class="chat-contact-name" id="chatContactName"></div>
+                    <div class="chat-contact-status" id="chatContactStatus">last seen today at 12:30 PM</div>
+                </div>
+            </div>
+            <div class="chat-actions">
+                <svg class="icon" onclick="makeCall()" viewBox="0 0 24 24">
+                    <path d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z"/>
+                </svg>
+                <svg class="icon" onclick="videoCall()" viewBox="0 0 24 24">
+                    <path d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z"/>
+                </svg>
+                <div class="dropdown">
+                    <svg class="icon" onclick="toggleChatDropdown()" viewBox="0 0 24 24">
+                        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                    </svg>
+                    <div class="dropdown-content" id="chatDropdownMenu">
+                        <div class="dropdown-item" onclick="viewContact()">View contact</div>
+                        <div class="dropdown-item" onclick="mediaLinks()">Media, links, and docs</div>
+                        <div class="dropdown-item" onclick="searchChat()">Search</div>
+                        <div class="dropdown-item" onclick="muteNotifications()">Mute notifications</div>
+                        <div class="dropdown-item" onclick="clearChat()">Clear chat</div>
+                        <div class="dropdown-item" onclick="deleteChat()">Delete chat</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will be populated here -->
+        </div>
+
+        <div class="chat-input-container">
+            <div class="chat-input-wrapper">
+                <button class="attachment-btn" onclick="showAttachmentOptions()">📎</button>
+                <input type="text" class="chat-input" id="messageInput" placeholder="Type a message" onkeypress="handleEnterKey(event)">
+                <button class="emoji-btn" onclick="showEmojiPicker()">😊</button>
+                <button class="send-btn" onclick="sendMessage()" id="sendBtn">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
+                    </svg>
+                </button>
+                <button class="voice-btn" onclick="startVoiceRecording()" id="voiceBtn" style="display: none;">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attachment Options Modal -->
+    <div class="attachment-modal" id="attachmentModal">
+        <div class="attachment-overlay" onclick="hideAttachmentOptions()"></div>
+        <div class="attachment-options">
+            <div class="attachment-option" onclick="attachDocument()">
+                <div class="attachment-icon document">📄</div>
+                <span>Document</span>
+            </div>
+            <div class="attachment-option" onclick="attachCamera()">
+                <div class="attachment-icon camera">📷</div>
+                <span>Camera</span>
+            </div>
+            <div class="attachment-option" onclick="attachGallery()">
+                <div class="attachment-icon gallery">🖼️</div>
+                <span>Gallery</span>
+            </div>
+            <div class="attachment-option" onclick="attachAudio()">
+                <div class="attachment-icon audio">🎵</div>
+                <span>Audio</span>
+            </div>
+            <div class="attachment-option" onclick="attachLocation()">
+                <div class="attachment-icon location">📍</div>
+                <span>Location</span>
+            </div>
+            <div class="attachment-option" onclick="attachContact()">
+                <div class="attachment-icon contact">👤</div>
+                <span>Contact</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
