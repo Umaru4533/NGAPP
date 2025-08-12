@@ -1,0 +1,55 @@
+{
+  "name": "NG App - Messaging",
+  "short_name": "NG App",
+  "description": "Modern messaging app with WhatsApp-like interface",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#111b21",
+  "theme_color": "#00a884",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["social", "communication"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "https://img.icons8.com/fluency/192/chat.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://img.icons8.com/fluency/512/chat.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://img.icons8.com/fluency/96/chat.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "https://img.icons8.com/fluency/144/chat.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Chat",
+      "short_name": "New Chat",
+      "description": "Start a new conversation",
+      "url": "/",
+      "icons": [{ "src": "https://img.icons8.com/fluency/96/chat.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://via.placeholder.com/320x640/111b21/ffffff?text=NG+App+Mobile",
+      "sizes": "320x640",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}
